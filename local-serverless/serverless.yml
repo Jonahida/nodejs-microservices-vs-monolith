@@ -1,0 +1,21 @@
+service: taskManagementService
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+plugins:
+  - serverless-offline
+
+functions:
+  manageTasks:
+    handler: handler.manageTasks
+    events:
+      - http:
+          path: tasks/{id}
+          method: get
+          cors: true # Habilita CORS si necesitas que el servicio sea accesible desde diferentes dominios
+
+custom:
+  serverless-offline:
+    httpPort: 3001 # Define el puerto para serverless-offline

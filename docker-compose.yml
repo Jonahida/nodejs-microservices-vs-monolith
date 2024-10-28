@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - servicio-tareas
+      - servicio-notificaciones
+      - servicio-usuarios
+    networks:
+      - backend
+
+  servicio-tareas:
+    image: servicio-tareas:latest
+    deploy:
+      replicas: 3
+    networks:
+      - backend
+
+  servicio-usuarios:
+    image: servicio-usuarios:latest
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+
+  servicio-notificaciones:
+    image: servicio-notificaciones:latest
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
